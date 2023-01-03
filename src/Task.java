@@ -36,9 +36,6 @@ public class Task {
     public Calendar getDueDate(){
         return this.dueDate;
     }
-    public Date getTimeDue(){
-        return this.dueDate.getTime();
-    }
     public int getDayDue(){
         return this.dueDate.get(dueDate.DATE);
     }
@@ -49,7 +46,7 @@ public class Task {
                 month = "January";
                 break;
             case 2:
-                month = "Febuary";
+                month = "February";
                 break;
             case 3:
                 month = "March";
@@ -86,6 +83,24 @@ public class Task {
     }
     public int getYearDue(){
         return this.dueDate.get(dueDate.YEAR);
+    }
+
+    public String getFullDate(){
+        String suffix = "th";
+        if(getDayDue() < 4) {
+            switch (getDayDue()){
+                case 1:
+                    suffix = "st";
+                    break;
+                case 2:
+                    suffix = "nd";
+                    break;
+                case 3:
+                    suffix = "rd";
+                    break;
+            }
+        }
+        return getDayDue() + suffix + " " + getMonthDue() + ", " + getYearDue();
     }
 
     public double getRecommendedOrder(){

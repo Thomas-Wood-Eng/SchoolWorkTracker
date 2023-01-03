@@ -1,6 +1,6 @@
 import java.util.List;
 import java.util.*;
-import java.util.stream.*;
+
 
 public class Main {
 
@@ -20,33 +20,65 @@ public class Main {
         String taskOrder = scanner.nextLine();
 
         boolean wantToExit = false, invalidOption = false;
+        int descriptionLength = allTasks.stream().map(a -> a.getDescription().length()).max(Integer::compare).get();
+        if(descriptionLength < 11){
+            descriptionLength = 11;
+        }
+        String description = "%-" + descriptionLength + "s";
+
+        int classNameLength = allTasks.stream().map(a -> a.getClassName().length()).max(Integer::compare).get();
+        if(classNameLength < 5){
+            classNameLength = 5;
+        }
+        String className = "%-" + classNameLength + "s";
+
+        int assignmentNameLength = allTasks.stream().map(a -> a.getTaskName().length()).max(Integer::compare).get();
+        if(assignmentNameLength < 4){
+            assignmentNameLength = 4;
+        }
+        String assignmentName = "%-" + assignmentNameLength + "s";
+
+        int typeNameLength = allTasks.stream().map(a -> a.getType().length()).max(Integer::compare).get();
+        if(typeNameLength < 4){
+            typeNameLength = 4;
+        }
+        String typeName = "%-" + typeNameLength + "s";
 
         while (!wantToExit) {
+            System.out.printf(assignmentName + " | " + "%-20s" + " | " + className + " | " + typeName
+                    + " | " + "%-10s | " + description + "\n", "Task", "Date Due", "Class", "Type", "Importance", "Description");
+            for(int i = 0; i < typeNameLength+assignmentNameLength+classNameLength+descriptionLength+45; i++){
+                System.out.printf("-");
+            }
 
             switch (taskOrder) {
                 case ("a"):
                     allTasks.stream().sorted(Comparator.comparing(Task::getDueDate))
-                            .forEach(s -> System.out.println(s.getTaskName() + " " + s.getDayDue()
-                                    + "th " + s.getMonthDue() + " " + s.getYearDue() + " " + s.getClassName()
-                                    + " " + s.getType() + " "+  s.getImportance() + " " + s.getDescription()));
+                            .forEach(s -> System.out.printf("\n" + assignmentName + " | " + "%-20s" + " | " + className
+                                    + " | " + typeName + " | " + "%-10d" + " | " + description, s.getTaskName(),
+                                    s.getFullDate(), s.getClassName(), s.getType(),
+                                    s.getImportance(), s.getDescription()));
                     break;
                 case ("b"):
                     allTasks.stream().sorted(Comparator.comparing(Task::getImportance))
-                            .forEach(s -> System.out.println(s.getTaskName() + " " + s.getDayDue()
-                                    + "th " + s.getMonthDue() + " " + s.getYearDue() + " " + s.getClassName()
-                                    + " " + s.getType() + " "+  s.getImportance() + " " + s.getDescription()));
+                            .forEach(s -> System.out.printf("\n" + assignmentName + " | " + "%-20s" + " | " + className
+                                            + " | " + typeName + " | " + "%-10d" + " | " + description, s.getTaskName(),
+                                    s.getFullDate(), s.getClassName(), s.getType(),
+                                    s.getImportance(), s.getDescription()));
                     break;
                 case ("c"):
                     allTasks.stream().sorted(Comparator.comparing(Task::getRecommendedOrder))
-                            .forEach(s -> System.out.println(s.getTaskName() + " " + s.getDayDue()
-                                    + "th " + s.getMonthDue() + " " + s.getYearDue() + " " + s.getClassName()
-                                    + " " + s.getType() + " "+  s.getImportance() + " " + s.getDescription()));
+                            .forEach(s -> System.out.printf("\n" + assignmentName + " | " + "%-20s" + " | " + className
+                                            + " | " + typeName + " | " + "%-10d" + " | " + description, s.getTaskName(),
+                                    s.getFullDate(), s.getClassName(), s.getType(),
+                                    s.getImportance(), s.getDescription()));
                     break;
                 case ("d"):
                     allTasks.stream().sorted(Comparator.comparing(Task::getClassName)).sorted()
-                            .forEach(s -> System.out.println(s.getTaskName() + " " + s.getDayDue()
-                                    + "th " + s.getMonthDue() + " " + s.getYearDue() + " " + s.getClassName()
-                                    + " " + s.getType() + " "+  s.getImportance() + " " + s.getDescription()));
+                            .forEach(s -> System.out.printf("\n" + assignmentName + " | " + "%-20s" + " | " + className
+                                            + " | " + typeName + " | " + "%-10d" + " | " + description, s.getTaskName(),
+                                    s.getFullDate(), s.getClassName(), s.getType(),
+                                    s.getImportance(), s.getDescription()));
                     break;
                 case ("e"):
                     wantToExit = true;
@@ -56,14 +88,16 @@ public class Main {
                     printOptions();
                     break;
                 default:
-                    System.out.println("Invalid. Try Again");
-                    taskOrder = scanner.nextLine();
+                    System.out.println("\nInvalid. Try Again");
                     invalidOption = true;
             }
 
             if(!wantToExit || invalidOption){
-                System.out.println("Feel free to pick another option");
-                taskOrder = scanner.nextLine();
+                System.out.println("\nFeel free to pick another option");
+                taskOrder = null;
+                while (taskOrder == null) {
+                    taskOrder = scanner.nextLine();
+                }
                 invalidOption = false;
             }
         }
@@ -81,6 +115,7 @@ public class Main {
 
         Double estimatedTime = null;
 
+
         Calendar dueDate = Calendar.getInstance();
 
         while (keepGoing) {
@@ -88,6 +123,7 @@ public class Main {
             while (className.equals("")){
                 className = scanner.nextLine();
             }
+
 
             System.out.println("Give the name of the Assignment");
             while (assignmentName.equals("")) {
@@ -157,9 +193,12 @@ public class Main {
             System.out.println("Would you like to add another task? (y/n)");
             while (go.equals("")) {
                 go = scanner.next();
+                if(!go.toLowerCase().equals("y") || !go.toLowerCase().equals("n")){
+                    go = "";
+                    System.out.println("Invalid Input");
+                }
             }
-            //TODO make this have a try again etc
-            if (!(go.toLowerCase().equals("y"))) {
+            if ((go.toLowerCase().equals("n"))) {
                 keepGoing = false;
             }
             currentTasks.add(new Task(className, description, dueDate, assignmentName, importance, estimatedTime, type, daysTillDue));
