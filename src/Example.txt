@@ -1,0 +1,4 @@
+You create multiple task through the communication via the terminal.
+After there are options to view your given task in different orders.
+There is also a reccommended order in which to complete the tasks given.
+This is based on your inputs
