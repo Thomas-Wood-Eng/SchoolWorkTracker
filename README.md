@@ -3,7 +3,7 @@ This is a Java program that helps users organize their schoolwork by allowing th
 
 ## Features
 
-## Sorting: The program can sort the list of tasks based on different criteria, including due date, priority level, and estimated time to complete.
+Sorting: The program can sort the list of tasks based on different criteria, including due date, priority level, and estimated time to complete.
 Recommended order: Based on the sorting criteria chosen by the user, the program will recommend an order in which to complete the tasks.
 ## Getting started
 Clone this repository onto your local machine.
